@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add User</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    var socket;
+    $(function () {
+        socket = io();
+        console.log("Created socket");
+        socket.on('user found',function(user){
+            var foundUser = JSON.parse(user);
+            console.log("Received " + user);
+            loadUser(foundUser);
+        })
+    });
+
+    function requestUser() { 
+        var id = document.getElementById('id').value; 
+        socket.emit('user request', id);
+        console.log("Emitted "+ id);
+    }
+
+    function loadUser(user_obj){
+        document.getElementById("name").value = user_obj["name"];
+        document.getElementById("type").value = user_obj["type"];
+        document.getElementById("id_user").value = user_obj["id"];
+        document.getElementById("isWhitelisted").value = user_obj["isBeingListened"];
+    }
+</script>
+<body>
+    ID: <input id="id" type="text" name="id">
+    <button id="load-user" onclick="requestUser()">Load UserInfo</button>
+
+    <form action="/user/edit/options">
+        Name: <input id="name" type="text" name="name"><br>
+        Type: <input id="type" type="text" name="type"><br>
+        <p style="display: none">ID: <input type="text" id="id_user" name="id_user"><br></p>
+        isWhitelisted: <input id="isWhitelisted" type="text" name="isWhitelisted"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>

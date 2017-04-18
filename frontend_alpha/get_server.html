@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<!--live chat functionaliy initially based off of Socket IO tutorial -->
+<!--https://socket.io/get-started/chat/-->
+
+<head>
+    <title>Socket.IO chat</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    $(function () {
+        var socket = io();
+        $('form').submit(function () {
+            if($('#name').val() != "" && $('#ip').val()){
+                var use_https = document.getElementById('use_https').checked;
+                socket.emit('info update', $('#name').val(),$('#ip').val(), use_https); //emit event with message
+                window.location.replace("/");
+            }
+            return false;
+        });
+        socket.on('chat message', function (msg) {
+            $('#messages').append($('<li>').text(msg));
+        });
+    });
+
+</script>
+
+<body>
+    <form action="">
+        Name: <input id="name"><br>
+        Server IP: <input id="ip" autocomplete="off" /><br>
+        <input type="checkbox" name="use-https" id="use_https">Use HTTPS<br>
+        <button>Send</button>
+    </form>
+</body>
+
+</html>

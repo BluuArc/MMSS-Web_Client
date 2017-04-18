@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<!--live chat functionaliy initially based off of Socket IO tutorial -->
+<!--https://socket.io/get-started/chat/-->
+
+<head>
+    <title></title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    function setFrameSize(height, width) {
+        // height += 50; //add space 
+        document.getElementById("web_frame").style.height = height + "px";
+        document.getElementById("web_frame").style.width = width + "px";
+    };
+
+    $(function () {
+        var socket = io();
+        console.log("Created socket");
+        socket.on('ip', function (ip) {
+            console.log("Received emit of ip");
+            var receivedIP = ip.toString();
+            console.log("Received " + receivedIP);
+            $('#ip').text(ip);
+        });
+    });
+    function reset_iframe() {
+        document.getElementById('web_frame').src = "/index";
+    }
+
+</script>
+
+<body>
+    Connected to:
+    <p style="display: inline" id="ip">Server IP Here</p><br>
+    <p id="header_title">Page Header here</p>
+    <button onclick="reset_iframe()">Click here to go back to main page</button>
+    <br>
+    <iframe src="/index" id="web_frame" style="width: 720px; height:1280px"></iframe>
+</body>
+
+</html>

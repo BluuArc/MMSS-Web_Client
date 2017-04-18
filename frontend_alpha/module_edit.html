@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add User</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    var socket;
+    $(function () {
+        socket = io();
+        console.log("Created socket");
+        socket.on('module found',function(rec_module){
+            var foundModule = JSON.parse(rec_module);
+            console.log("Received " + rec_module);
+            loadUser(foundModule);
+        })
+    });
+
+    function requestUser() { 
+        var id = document.getElementById('id').value; 
+        socket.emit('module request', id);
+        console.log("Emitted "+ id);
+    }
+
+    function loadUser(user_obj){
+        document.getElementById("name").value = user_obj["name"];
+        document.getElementById("type").value = user_obj["type"];
+        document.getElementById("id_user").value = user_obj["id"];
+        document.getElementById("isWhitelisted").value = user_obj["isBeingListened"];
+        document.getElementById("parameterData").value = JSON.stringify(user_obj["parameterData"])
+    }
+</script>
+<body>
+    ID: <input id="id" type="text" name="id">
+    <button id="load-user" onclick="requestUser()">Load ModuleInfo</button>
+
+    <form action="/module/edit/options">
+        Name: <input id="name" type="text" name="name"><br>
+        Type: <input id="type" type="text" name="type"><br>
+        <p style="display: none">ID: <input type="text" id="id_user" name="id_user"><br></p>
+        isWhitelisted: <input id="isWhitelisted" type="text" name="isWhitelisted"><br>
+        Parameter Data: <input id="parameterData" type="text" name="parameterData"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>
