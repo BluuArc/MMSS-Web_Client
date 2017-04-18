@@ -2,19 +2,10 @@
 <html>
 
 	<style>
-		.infobox {
-		    background-color: lightgrey;
-		    width: auto;
-		    height: auto;
-		    border: 1px solid black;
-		}
-
 		.generic {
 		    margin: auto;
 		    width: auto;
-		    height: 90%;
-		    border: 1px solid black;
-		    padding: 10px;
+		    text-align: center;
 		}
 		
 		.test {
@@ -34,19 +25,29 @@
 	
 	<div class="test">
 	    <form action="/user/add/options">
-		Name: <input type="text" name="name" style="margin-left: 16px;width: 99px;font-size: 3.5vw;"><br>
-		Type: <select name="type" style="margin-left: 23px;">
+		
+		<p style="font-size: 7.5vw;display:inline;">Name:</p> 
+		<input type="text" name="name" style="margin-left: 10vw;width: 45.5vw;font-size: 7.5vw;"><br>
+		
+		<p style="font-size: 7.5vw;display:inline;">Type:</p>
+		<select name="type" style="margin-left: 13vw;width:46.2vw;font-size: 7.5vw;">
 		    <option>guardian</option>
 		    <option>dependent</option>
 		</select><br>
-		blacklist: <select name="status">
+		
+		<p style="font-size: 7.5vw;display:inline;">Blacklist:</p> 
+		<select name="status" style="margin-left: 1.3vw;font-size:7.5vw;width: 46vw;">
 		<option>true</option>
 		<option>false</option>
 		</select><br>
-		ID: <input type="text" name="id" style="margin-left: 38px;width: 99px;"><br>
-		<input type="submit" value="Submit">
+		
+		<p style="font-size: 7.5vw;display:inline;">ID:</p>
+		<input type="text" name="id" style="margin-left: 20vw;width: 45.6vw;font-size: 7.5vw;"><br>
+		
+		<div class="generic">
+		<input type="submit" value="Submit" style="text-align:center;font-size: 7.5vw;">
 	    </form>
-	    
+	    </div>
 	</div>   
 	</body>
 </html>
