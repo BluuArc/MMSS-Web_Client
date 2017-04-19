@@ -3,7 +3,6 @@
 
 <link rel = "stylesheet" type = "text/css" href = "textbox.css" />
 
-
 <!--live chat functionaliy initially based off of Socket IO tutorial -->
 <!--https://socket.io/get-started/chat/-->
 
@@ -32,13 +31,17 @@
 
 <body>
 <div class="generic">
-    <form action="">
-        Name: <input id="name" style="font-size: 7.5vw;width: 60vw;margin-left:11%"><br>
-        Server IP: <input id="ip" autocomplete="off" style="font-size: 7.5vw;width: 60vw;"><br>
-        Use-HTTPS: <input type="checkbox" name="use-https" id="use_https" style="zoom: 2.5;"><br>
-        
-	<div class="test"><button style="font-size: 7.5vw;">Send</button></div>
-    </form>
-</body>
+	<div class="splash">
+		<form action="" style="margin-left: 15%;">
+			<b>Name:</b><br> <input id="name" style="font-size: 100%; width: 99%;"><br>
+			<b>Server IP:</b> <input id="ip" autocomplete="off" style="font-size: 100%; width: 99%;"><br>
+			<b>Use HTTPS</b> <input type="checkbox" name="use-https" id="use_https" style="zoom: 2.5;"><br>
+			<div class="center">
+			<button style="font-size: 100%;">Send</button>
+			</div>
+		</form>
+	</div>
 </div>
+</body>
+
 </html>
