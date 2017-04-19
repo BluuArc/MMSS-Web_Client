@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
+
+
+<head>
+    <title>Edit Module</title>
+</head>
+
+<body>
+
+
+<div class="center">
+<div class="editID">
+	<b>ID:</b> <p id="id">example</p>
+</div>
+</div>
+<br>
+<br>
+<div class="generic">
+<div class="modules">
+    <form action="/module/edit/options">
+        <b>Name:</b><br> <input type="text" name="name" style="width: 99%;font-size: 100%;"><br>
+        <b>Type:</b><br> <select name="type" style="width: 99%;font-size: 100%;">
+            <option>sensormodule</option>
+            <option>interactivemodule</option>
+        </select><br>
+        
+	<b>Blacklist:</b><br> <select name="status" style="font-size:100%;width: 100%;">
+		<option>true</option>
+		<option>false</option>
+	</select><br><br>
+	
+        
+	<div class="center">
+		<input type="submit" value="Submit" style="font-size: 100%;"><br>
+	</div>
+
+    </form>
+</div>
+</div>
+</body>
+
+</html>
