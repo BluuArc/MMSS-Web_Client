@@ -62,7 +62,9 @@
 	}
 
 	.page_container{
-		/*maybe some vertical alignment code here?*/
+		display: flex;
+		align-items: center;
+		height: auto;
 	}
 
 	/*button style code originally from https://www.w3schools.com/css/css3_buttons.asp*/
