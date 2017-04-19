@@ -1,53 +1,34 @@
 <!DOCTYPE html>
 <html>
 
-	<style>
-		.generic {
-		    margin: auto;
-		    width: auto;
-		    text-align: center;
-		}
-		
-		.test {
-		   width: auto;
-		   display:block;
-		    overflow:auto;
-		    border: 1px solid black;
-		}
-		
-	</style>
+<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
 
-	<head>
-	    <title>Add User</title>
-	</head>
+<head>
+<title>Add User</title>
+</head>
 
-	<body>
-	
-	<div class="test">
-	    <form action="/user/add/options">
-		
-		<p style="font-size: 7.5vw;display:inline;">Name:</p> 
-		<input type="text" name="name" style="margin-left: 10vw;width: 45.5vw;font-size: 7.5vw;"><br>
-		
-		<p style="font-size: 7.5vw;display:inline;">Type:</p>
-		<select name="type" style="margin-left: 13vw;width:46.2vw;font-size: 7.5vw;">
-		    <option>guardian</option>
-		    <option>dependent</option>
-		</select><br>
-		
-		<p style="font-size: 7.5vw;display:inline;">Blacklist:</p> 
-		<select name="status" style="margin-left: 1.3vw;font-size:7.5vw;width: 46vw;">
+<body>
+
+<div class="generic">
+<div class="modules">
+<form action="/user/add/options">
+	<b>Name:</b><br> <input type="text" name="name" style="width: 99%;font-size: 100%;"><br>
+	<b>Type:</b><br> <select name="type" style="width: 100%;font-size: 100%;">
+		<option>guardian</option>
+		<option>dependent</option>
+	</select><br>
+
+	<b>Blacklist:</b><br> <select name="status" style="font-size:100%;width: 100%;">
 		<option>true</option>
 		<option>false</option>
-		</select><br>
-		
-		<p style="font-size: 7.5vw;display:inline;">ID:</p>
-		<input type="text" name="id" style="margin-left: 20vw;width: 45.6vw;font-size: 7.5vw;"><br>
-		
-		<div class="generic">
-		<input type="submit" value="Submit" style="text-align:center;font-size: 7.5vw;">
-	    </form>
-	    </div>
-	</div>   
-	</body>
+	</select><br>
+
+	<b>ID:</b><br> <input type="text" name="id" style="width: 99%;font-size: 100%;"><br><br>
+
+	<div class="center">
+	<input type="submit" value="Submit" style="text-align: center;font-size: 100%;"><br>
+	</div>
+</form>
+</div>   
+</body>
 </html>
