@@ -7,10 +7,18 @@
     <title>System Overview</title>
 </head>
 
+<script>
+    function addSize(){
+        var notifBox = document.getElementById('notifications');
+        if(notifBox.size < 80)
+            notifBox.size += 1;
+    }
+</script>
+
 <body>
     <div class="page_container">
         <div class="left_panel">
-            <select id="notifications" multiple="multiple" style="height: 100%;">
+            <select id="notifications" multiple="multiple" size="30" style="height: 100%;">
                 <option>Sample Notification</option>
             </select>
         </div>
@@ -19,6 +27,7 @@
             <button>Users</button><br>
             <button>Modules</button><br>
             <button>Logs</button><br>
+            <button onclick="addSize()">Add size</button><br>
         </div>
     </div>
 
