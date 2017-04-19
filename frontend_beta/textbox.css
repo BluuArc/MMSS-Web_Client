@@ -76,6 +76,16 @@
 		color: white;
 	}
 	
+	input[type=submit]{
+		-webkit-transition-duration: 0.4s; /* Safari */
+		transition-duration: 0.4s;
+	}
+
+	input[type=submit]:hover{
+		background-color: #4CAF50; /* Green */
+		color: white;
+	}
+	
 	p {
 		display: inline;
 	}
