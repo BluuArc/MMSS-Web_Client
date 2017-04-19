@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+.left_panel{
+    display: flex;
+    flex-direction: column;
+    float: left; 
+    width: 45%; 
+    margin-right: 5%;
+    border: 1px solid red;
+}
+
+.right_panel{
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 50%; 
+    border: 1px solid red;
+}
+
+.page_container{
+    /*maybe some vertical alignment code here?*/
+}
+</style>
+
+<head>
+    <title>System Overview</title>
+</head>
+
+<body>
+    <div class="page_container">
+        <div class="left_panel">
+            <select id="notifications" size="70">
+                <option>Sample Notification</option>
+            </select>
+        </div>
+
+        <div class="right_panel">
+            <button>Users</button><br>
+            <button>Modules</button><br>
+            <button>Logs</button><br>
+        </div>
+    </div>
+
+</body>
+
+</html>
