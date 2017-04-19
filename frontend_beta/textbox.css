@@ -5,6 +5,15 @@
 	    border: 1px solid black;
 	    text-align: left;
 	}
+	
+	.editID {
+	    background-color: lightgrey;
+	    width: 50%;
+	    margin-left: 24%;
+	    border: 1px solid black;
+	    text-align: center;
+	    font-size: 300%
+	}
 
 	.generic {
 	    margin-right: 1%;
