@@ -1,39 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-.left_panel{
-    display: flex;
-    flex-direction: column;
-    float: left; 
-    width: 45%; 
-    margin-right: 5%;
-    border: 1px solid red;
-}
-
-.right_panel{
-    width: 45%;
-    display: flex;
-    flex-direction: column;
-    margin-left: 50%; 
-    border: 1px solid red;
-}
-
-.page_container{
-    /*maybe some vertical alignment code here?*/
-}
-
-/*button style code originally from https://www.w3schools.com/css/css3_buttons.asp*/
-button {
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-}
-
-button:hover {
-    background-color: #4CAF50; /* Green */
-    color: white;
-}
-</style>
+<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
 
 <head>
     <title>System Overview</title>
@@ -42,7 +10,7 @@ button:hover {
 <body>
     <div class="page_container">
         <div class="left_panel">
-            <select id="notifications" size="70">
+            <select id="notifications" multiple="multiple" style="height: 100%;">
                 <option>Sample Notification</option>
             </select>
         </div>
