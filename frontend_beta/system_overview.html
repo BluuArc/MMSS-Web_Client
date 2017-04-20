@@ -2,25 +2,80 @@
 <html>
 
 <link rel = "stylesheet" type = "text/css" href = "textbox.css" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
 
 <head>
     <title>System Overview</title>
 </head>
 
 <script>
-    function addSize(){
+    if (socket == undefined) { socket = io(); }
+    socket.emit('notifications request');
+    //check for notifications every 5 seconds
+    setInterval(function(){
+        socket.emit('notifications request');
+    },1000);
+
+    //expected input: Array of PassableNotification objects (as a JSON string)
+    socket.on('notifications response', function(notif_arr_str){
+        var notif_arr = JSON.parse(notif_arr_str);
+        // console.log(notif_arr);
+        if(notif_arr.length == document.getElementById('notifications').length){
+            return;
+        }
+        clearNotifications();
+        if(notif_arr.length == 0){
+            addNotification("No notifications");
+        }else{
+            //insert in reverse order
+            for(var i = notif_arr.length - 1; i >= 0; --i){
+                var notification = notif_arr[i];
+                console.log(notification);
+                var notifMsg = "[" + notification["time"] + "] " + (notification["success"] ? "SUCCESS: " : "FAIL: ") + notification["message"]
+                addNotification(notifMsg);
+            }
+        }
+    });
+
+    function clearNotifications(){
         var notifBox = document.getElementById('notifications');
-        if(notifBox.size < 80)
-            notifBox.size += 1;
+        while(notifBox.length > 0){
+            notifBox.remove(0);
+        }
     }
+
+    //expected input: string
+    function addNotification(notification_msg){
+        var notifBox = document.getElementById('notifications');
+        var newNotif = document.createElement('option');
+        newNotif.text = notification_msg;
+        notifBox.add(newNotif);
+        if(notifBox.length > notifBox.size){
+            addSize(10);
+        }   
+    }
+
+    function addSize(amt){
+        var notifBox = document.getElementById('notifications');
+        var max_size = 35;
+        if(notifBox.size < max_size)
+            notifBox.size += amt;
+        if(notifBox.size > max_size){
+            notifBox.size = max_size;
+        }
+    }
+
+
 </script>
 
-<body>
+<body onload="emitHeader(document.title);">
     <div class="generic">
     <div class="page_container">
         <div class="left_panel">
-            <select id="notifications" multiple="multiple" size="30" style="height: 100%;font-size: 60%;">
-                <option>Sample Notification</option>
+            <select disabled id="notifications" multiple="multiple" size="35" style="height: 100%;font-size: 60%;overflow:auto; width:100%">
+                <!--<option></option>-->
             </select>
         </div>
 

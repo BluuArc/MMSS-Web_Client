@@ -20,6 +20,8 @@ var editor_info = {
     type: "user"
 }
 
+var local_user;
+
 //options to be used for all tests
 //request reference: http://samwize.com/2013/08/31/simple-http-get-slash-post-request-in-node-dot-js/
 var serverRequestOptions = {
@@ -55,16 +57,16 @@ io.on('connection', function (socket) {
         }
         serverRequestOptions["use_https"] = use_https;
 
-        var clientUser = {
+        local_user = {
             name: editor_info["name"],
             id: editor_info["id"],
             type: editor_info["type"],
             logs: [],
             notifications: [],
             isBeingListened: false,
-            last_update_time: get_formatted_date(new Date())
+            last_update_time: "1970-01-01 00:00:00"
         };
-        send_data_get_response('/user/add', 'POST', JSON.stringify(clientUser), function (fullResponse) {
+        send_data_get_response('/user/add', 'POST', JSON.stringify(local_user), function (fullResponse) {
             var server_response = JSON.parse(fullResponse);
             console.log(server_response);
             if(server_response.message.code != undefined){ //error occurred
@@ -79,6 +81,14 @@ io.on('connection', function (socket) {
         });
     });
 
+    socket.on('notifications request',function(){
+        // console.log("Received notif request");
+        var request_data = JSON.stringify(local_user);
+        send_data_get_response('/notifications', 'POST', request_data, function(fullResponse){
+            io.emit('notifications response', fullResponse);
+        });
+    });
+
     socket.on('user request', function (id) {
         console.log("Received " + id);
         var path = '/user/id/' + id;
@@ -90,8 +100,8 @@ io.on('connection', function (socket) {
             } catch (err) {
                 console.log(err);
             }
-        })
-    })
+        });
+    });
 
     socket.on('module request', function (id) {
         console.log("Received " + id);
@@ -104,8 +114,9 @@ io.on('connection', function (socket) {
             } catch (err) {
                 console.log(err);
             }
-        })
-    })
+        });
+    });
+
 });
 
 function send_response_to_client(response_obj) {
