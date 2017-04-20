@@ -52,22 +52,7 @@
         var newNotif = document.createElement('option');
         newNotif.text = notification_msg;
         notifBox.add(newNotif);
-        if(notifBox.length > notifBox.size){
-            addSize(10);
-        }   
     }
-
-    function addSize(amt){
-        var notifBox = document.getElementById('notifications');
-        var max_size = 35;
-        if(notifBox.size < max_size)
-            notifBox.size += amt;
-        if(notifBox.size > max_size){
-            notifBox.size = max_size;
-        }
-    }
-
-
 </script>
 
 <body onload="emitHeader(document.title);">
@@ -76,7 +61,7 @@
     <button style="font-size: 100%;" onclick="gotoPage('/modules')">Modules</button>
     <button style="font-size: 100%;" onclick="gotoPage('/logs')">Logs</button><br>
 	
-    <select disabled id="notifications" multiple="multiple" size="35" style="height: 100%;font-size: 60%;overflow:auto; width:100%">
+    <select disabled id="notifications" multiple="multiple" size="33" style="height: 100%;font-size: 60%;overflow:auto; width:100%">
 	<!--<option></option>-->
     </select>
     </div>
