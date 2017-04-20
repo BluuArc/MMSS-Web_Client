@@ -5,7 +5,7 @@
 <!--https://socket.io/get-started/chat/-->
 
 <head>
-    <title></title>
+    <title>MMSS Web Client: Beta Release</title>
 </head>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -24,6 +24,11 @@
             var receivedIP = ip.toString();
             console.log("Received " + receivedIP);
             $('#ip').text(ip);
+        });
+
+        socket.on('header update',function(new_header){
+            console.log("Received new header " + new_header);
+            $('#header_title').text(new_header);
         });
     });
     function reset_iframe() {

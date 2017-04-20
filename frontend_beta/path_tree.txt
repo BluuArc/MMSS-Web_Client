@@ -1,0 +1,12 @@
+/ -> wrapper.html
+/index -> splash.html (if no ip)
+/index -> system_overview.html
+/user -> genericPage (user edition)
+/user/add -> user_add.html
+/user/edit -> user_edit.html
+/user/delete -> delete_confirmation.html (redirect from /user)
+/module -> genericPage (module edition)
+/module/add -> module_add.html
+/module/edit -> module_edit.html
+/module/delete -> delete_confirmation.html (redirect from /module)
+

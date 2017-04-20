@@ -1,6 +1,8 @@
 var express = require('express');
-var app = express();
 var bodyParser = require('body-parser');
+var app = express();
+app.use(bodyParser.urlencoded({ extended: false, limit: '200mb', parameterLimit: 50000 }));
+app.use(express.static('frontend_beta')); //needed for css
 var request = require('request');
 var markdown = require('markdown').markdown;
 var fs = require('fs');
@@ -8,13 +10,13 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var http = require('http');
 var https = require('https');
+var shortid = require('shortid');
 
-app.use(bodyParser.urlencoded({ extended: false, limit: '200mb', parameterLimit: 50000 }));
 
 var server_ip = "";
 var editor_info = {
     name: "",
-    id: "DEMO_USER", //TODO: auto generate
+    id: shortid.generate(), //TODO: auto generate
     type: "user"
 }
 
@@ -31,17 +33,21 @@ var serverRequestOptions = {
 //live chat functionaliy initially based off of Socket IO tutorial
 //https://socket.io/get-started/chat/
 io.on('connection', function (socket) {
-    console.log('A user connected');
+    console.log(socket.conn.remoteAddress + ' connected');
     io.emit('ip', server_ip);
+    socket.on('header update', function(header){
+        console.log("received " + header);
+        io.emit('header update', header);
+    })
 
     socket.on('disconnect', function () {
-        console.log('A user disconnected');
+        console.log(socket.conn.remoteAddress + ' disconnected');
     });
 
-    socket.on('info update', function (name, ip, use_https) {
+    socket.on('login request', function (name, ip, use_https) {
         console.log("Received " + name + " and " + ip);
-        editor_info["name"] = name,
-            server_ip = ip;
+        editor_info["name"] = name;
+        server_ip = ip;
         serverRequestOptions["host"] = ip.split(':')[0];
         serverRequestOptions["port"] = ip.split(':')[1];
         if (serverRequestOptions["port"] == "") {
@@ -61,8 +67,14 @@ io.on('connection', function (socket) {
         send_data_get_response('/user/add', 'POST', JSON.stringify(clientUser), function (fullResponse) {
             var server_response = JSON.parse(fullResponse);
             console.log(server_response);
+            if(server_response.message.code != undefined){ //error occurred
+                server_ip = "";
+            }else{
+                io.emit('ip', server_ip);
+            }   
 
-            send_response_to_client(server_response);
+            io.emit('login response', JSON.stringify(server_response));
+            // send_response_to_client(server_response);
             // res.redirect('/index');
         });
     });
@@ -235,7 +247,12 @@ app.get('/',function(req,res){
 });
 
 app.get('/index',function(req,res){
-    res.sendFile(__dirname + "/frontend_beta/" + "splash.html");
+    console.log("Received request for /index");
+    console.log(server_ip);
+    if(server_ip == "")
+        res.sendFile(__dirname + "/frontend_beta/" + "splash.html");
+    else
+        res.sendFile(__dirname + "/frontend_beta/" + "system_overview.html");
 });
 
 

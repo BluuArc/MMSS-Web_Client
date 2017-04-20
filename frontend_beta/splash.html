@@ -1,35 +1,54 @@
 <!doctype html>
 <html>
 
-<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
 
 <!--live chat functionaliy initially based off of Socket IO tutorial -->
 <!--https://socket.io/get-started/chat/-->
 
 <head>
-    <title>Splash</title>
+    <title>Login Screen</title>
 </head>
+<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
 <script>
+    if(socket == undefined){
+        socket = io();
+    }
+
     $(function () {
-        var socket = io();
         $('form').submit(function () {
-            if($('#name').val() != "" && $('#ip').val()){
+            if($('#name').val() != "" && $('#ip').val() != ""){
                 var use_https = document.getElementById('use_https').checked;
-                socket.emit('info update', $('#name').val(),$('#ip').val(), use_https); //emit event with message
-                window.location.replace("/");
+                socket.emit('login request', $('#name').val(),$('#ip').val(), use_https); //emit event with message
+                // window.location.replace("/index");
+            }else{
+                alert("Please enter a name and IP");
             }
             return false;
         });
-        socket.on('chat message', function (msg) {
-            $('#messages').append($('<li>').text(msg));
+
+        socket.on('login response', function(str_response){
+            var response = JSON.parse(str_response);
+            console.log(response);
+            if(response.success == true){
+                window.location.replace("/index");
+            }else{
+                try{
+                    if(response.message.code == undefined)
+                        return;
+                    alert("Login failed.\nReason: " + response.message.code);
+                }catch(err){
+                    console.log(err);
+                    alert("Login failed.\nReason: internal error has occurred");
+                }
+            }
         });
     });
-
 </script>
 
-<body>
+<body onload="emitHeader(document.title);">
 <div class="center"><img src="320x200.png"><br></div><br>
 
 <div class="generic">
