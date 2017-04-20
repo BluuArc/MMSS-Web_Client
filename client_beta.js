@@ -22,6 +22,9 @@ var editor_info = {
 
 var local_user;
 
+var current_user;
+var current_module;
+
 //options to be used for all tests
 //request reference: http://samwize.com/2013/08/31/simple-http-get-slash-post-request-in-node-dot-js/
 var serverRequestOptions = {
@@ -60,7 +63,7 @@ io.on('connection', function (socket) {
         local_user = {
             name: editor_info["name"],
             id: editor_info["id"],
-            type: editor_info["type"],
+            type: "guardian",
             logs: [],
             notifications: [],
             isBeingListened: false,
@@ -89,18 +92,18 @@ io.on('connection', function (socket) {
         });
     });
 
-    socket.on('user request', function (id) {
-        console.log("Received " + id);
-        var path = '/user/id/' + id;
-        get_server_response(path, 'GET', function (fullResponse) {
-            try {
-                var result = JSON.parse(fullResponse);
-                io.emit('user found', JSON.stringify(result));
-                console.log("Emitted " + JSON.stringify(result));
-            } catch (err) {
-                console.log(err);
-            }
-        });
+    socket.on('user list request',function(){
+          get_server_response('/user/list','GET',function(fullResponse){
+              io.emit('user list response', fullResponse);
+          })
+    });
+
+    socket.on('save user', function(user_str){
+        current_user = JSON.parse(user_str);
+    });
+
+    socket.on('user request', function () {
+        io.emit('user response', JSON.stringify(current_user));
     });
 
     socket.on('module request', function (id) {
@@ -120,8 +123,9 @@ io.on('connection', function (socket) {
 });
 
 function send_response_to_client(response_obj) {
-    var msg = (response_obj["success"] ? "SUCCESS: " : "FAILURE: ") + response_obj["message"];
-    io.emit('response', msg);
+    // var msg = (response_obj["success"] ? "SUCCESS: " : "FAILURE: ") + response_obj["message"];
+    // console.log("Sending " + msg);
+    io.emit('response', JSON.stringify(response_obj));
 }
 
 
@@ -264,6 +268,40 @@ app.get('/index',function(req,res){
         res.sendFile(__dirname + "/frontend_beta/" + "splash.html");
     else
         res.sendFile(__dirname + "/frontend_beta/" + "system_overview.html");
+});
+
+app.get('/user',function(req,res){
+    res.sendFile(__dirname + "/frontend_beta/" + "user_overview.html");
+});
+
+app.get('/user/add',function(req,res){
+    res.sendFile(__dirname + "/frontend_beta/" + "user_add.html");
+});
+
+app.get('/user/add/options', function (req, res) {
+    // console.log(req);
+    var newUser = {
+        name: req.query.name,
+        id: shortid.generate(),
+        type: req.query.type,
+        logs: [],
+        notifications: [],
+        isBeingListened: false,
+        last_update_time: get_formatted_date(new Date())
+    };
+    console.log(newUser);
+    var path = '/user/add';
+    send_data_get_response(path, 'POST', JSON.stringify(newUser), function (fullResponse) {
+        var server_response = JSON.parse(fullResponse);
+        console.log(server_response);
+
+        send_response_to_client(server_response);
+        // res.end();
+        if(server_response.success)
+            res.redirect('/user');
+        else
+            res.redirect('/user/add');
+    });
 });
 
 

@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html>
 
-<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
+<link rel="stylesheet" type="text/css" href="/textbox.css" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
 
 <head>
 <title>Add User</title>
 </head>
+<script>
+	if (socket == undefined) { socket = io(); }
+	// socket.emit('user request');
 
+	var user;
+	socket.on('user response', function(user_str){
+		user = JSON.parse(user_str);
+
+		setFields(user);
+	});
+
+	function setFields(inUser){
+		$('#name').text(user.name);
+
+		var type = document.getElementById('type');
+		type.selectedIndex = (user.type.toLowerCase() == "guardian") ?  0 : 1;
+
+		var blacklist = document.getElementById('status');
+		blacklist.selectedIndex = (user.isBeingListenedTo) ? 0 : 1;
+	}
+
+	socket.on('response', function (server_response_str) {
+			document.getElementById('name').value = "";
+			var response_obj = JSON.parse(server_response_str); 
+			var msg = (response_obj["success"]
+				? "SUCCESS: " : "FAILURE: ") + response_obj["message"]; 
+			alert(msg);
+		});
+</script>
 <body>
 
 <div class="generic">
 <div class="modules">
 <form action="/user/add/options">
-	<b>Name:</b><br> <input type="text" name="name" style="width: 99%;font-size: 100%;"><br>
-	<b>Type:</b><br> <select name="type" style="width: 100%;font-size: 100%;">
+	<b>Name:</b><br> <input id="name" type="text" name="name" style="width: 99%;font-size: 100%;"><br>
+	<b>Type:</b><br> <select id="type" name="type" style="width: 100%;font-size: 100%;">
 		<option>guardian</option>
 		<option>dependent</option>
 	</select><br>
 
-	<b>Blacklist:</b><br> <select name="status" style="font-size:100%;width: 100%;">
+	<!--<b>Blacklist:</b><br> <select id="status" name="status" style="font-size:100%;width: 100%;">
 		<option>true</option>
 		<option>false</option>
-	</select><br>
+	</select><br>-->
 	
 	<br>
 	<div class="center">

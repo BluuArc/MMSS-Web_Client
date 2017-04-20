@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
+
+<head>
+	<title>User Overview</title>
+</head>
+<script>
+	if (socket == undefined) { socket = io(); }
+	getUsers();
+	var users = [];
+
+	function getUsers(){
+		socket.emit('user list request');
+	}
+
+	//populate dropdown
+	socket.on('user list response', function(user_arr_str){
+		users = JSON.parse(user_arr_str);
+		for(var i = 0; i < users.length; ++i){
+			addUserToDropDown(users[i]);
+		}
+		printUserInfo();
+	});
+
+	function addUserToDropDown(user){
+		var userBox = document.getElementById('dropdown');
+		var option = document.createElement('option');
+		option.text = user["name"] + " (" + user["type"] + ")";
+		userBox.add(option);
+	}
+
+
+	function printUserInfo(){
+		var index = document.getElementById('dropdown').selectedIndex;
+		var user = users[index];
+
+		$('#name').text(user.name);
+		$('#status').text(user.isBeingListened.toString());
+		$('#type').text(user.type);
+	}
+
+	function goToUserPage(url){
+		var index = document.getElementById('dropdown').selectedIndex;
+		var user = users[index];
+		socket.emit('save user', JSON.stringify(user));
+		gotoPage(url);
+	}
+
+	socket.on('response', function (server_response_str) {
+		var response_obj = JSON.parse(server_response_str); 
+		var msg = (response_obj["success"]
+			? "SUCCESS: " : "FAILURE: ") + response_obj["message"]; 
+		alert(msg);
+	});
+</script>
+<body onload="emitHeader(document.title);">
+<div class="generic">
+	<b> Select <p id="TypeName">User:</p> </b>
+
+	<select id="dropdown" style="font-size: 100%;" onchange="printUserInfo()">
+		
+	</select> <br><br>
+
+
+	<div class="center">
+
+		<b><p id="TypeName">User</p> info:</b> <br>
+
+		<div class="infobox"> 
+
+			<b>Name:</b> 
+			<p id="name">name</p><br>
+
+			<b>Blacklist:</b>
+			<p id="status">True</p><br>
+
+			<b>Type:</b>
+			<p id="type">type</p><br>
+		</div> <br>
+
+		<button id="add" type="button" onclick="goToUserPage('/user/add');" style="font-size:100%;">add</button>
+		<button id="edit" type="button" onclick="goToUserPage('/user/edit');" style="font-size:100%;">edit</button>
+		<button id="remove" type="button" onclick="goToUserPage('/user/remove');" style="font-size:100%;">remove</button>
+	</div>
+
+</div>
+</body>
+
+</html>
