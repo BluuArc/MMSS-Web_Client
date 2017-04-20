@@ -30,7 +30,11 @@
 	function addUserToDropDown(user){
 		var userBox = document.getElementById('dropdown');
 		var option = document.createElement('option');
-		option.text = user["name"] + " (" + user["type"] + ")";
+		var name = user.name;
+		if(name.length > 15){
+			name = name.slice(0,15) + "...";
+		}
+		option.text = name + " (" + user["type"][0].toUpperCase() + ")";
 		userBox.add(option);
 	}
 

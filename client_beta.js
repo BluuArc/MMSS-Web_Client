@@ -300,7 +300,7 @@ app.get('/user/add/options', function (req, res) {
         if(server_response.success)
             res.redirect('/user');
         else
-            res.redirect('/user/add');
+            res.end();
     });
 });
 
