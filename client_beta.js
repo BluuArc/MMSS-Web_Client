@@ -296,11 +296,35 @@ app.get('/user/add/options', function (req, res) {
         console.log(server_response);
 
         send_response_to_client(server_response);
-        // res.end();
         if(server_response.success)
             res.redirect('/user');
         else
-            res.end();
+            res.redirect('/user/edit');
+    });
+});
+
+app.get('/user/edit', function (req, res) {
+    res.sendFile(__dirname + "/frontend_beta/" + "user_edit.html");
+});
+
+app.get('/user/edit/options', function (req, res) {
+    console.log(req);
+    editedUser = JSON.parse(JSON.stringify(current_user));
+    editedUser.editor_info = editor_info;
+    editedUser.name = req.query.name,
+    editedUser.type = req.query.type,
+    editedUser.isBeingListened = (req.query.status == 'false');
+    console.log(editedUser);
+    var path = '/user/edit';
+    send_data_get_response(path, 'POST', JSON.stringify(editedUser), function (fullResponse) {
+        var server_response = JSON.parse(fullResponse);
+        console.log(server_response);
+
+        send_response_to_client(server_response);
+        if (server_response.success)
+            res.redirect('/user');
+        else
+            res.redirect('/user/edit');
     });
 });
 

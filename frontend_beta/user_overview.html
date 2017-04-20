@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
+<link rel = "stylesheet" type = "text/css" href = "/textbox.css" />
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script src="/client_scripts.js"></script>
@@ -44,7 +44,7 @@
 		var user = users[index];
 
 		$('#name').text(user.name);
-		$('#status').text(user.isBeingListened.toString());
+		$('#status').text((!user.isBeingListened).toString());
 		$('#type').text(user.type);
 	}
 
@@ -54,13 +54,6 @@
 		socket.emit('save user', JSON.stringify(user));
 		gotoPage(url);
 	}
-
-	socket.on('response', function (server_response_str) {
-		var response_obj = JSON.parse(server_response_str); 
-		var msg = (response_obj["success"]
-			? "SUCCESS: " : "FAILURE: ") + response_obj["message"]; 
-		alert(msg);
-	});
 </script>
 <body onload="emitHeader(document.title);">
 <div class="generic">
