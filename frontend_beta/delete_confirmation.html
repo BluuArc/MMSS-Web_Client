@@ -1,23 +1,64 @@
 <!DOCTYPE html>
 <html>
 
-<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
-
+<link rel="stylesheet" type="text/css" href="/textbox.css" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
 
 <head>
     <title>Confirm Delete</title>
 </head>
+<script>
+	if (socket == undefined) { socket = io(); }
+	socket.emit('get delete item');
 
-<body>
+	var type;
+	socket.on('get delete item response',function(delete_item_str){
+		var item = JSON.parse(delete_item_str);
+		
+		var itemType = "Unknown type";
+		if(item.type.toLowerCase().indexOf('module') > -1){
+			itemType = "Module";
+		}else if(['guardian','dependent'].indexOf(item.type.toLowerCase()) > -1){
+			itemType = "User";
+		}
+		type = itemType;
+		$('#Nametype').text(itemType);
+
+		$('#item').text(item.name);
+	});
+
+	function goBack(){
+		switch(type){
+			case 'Module': gotoPage('/module'); return;
+			case 'User': gotoPage('/user'); return;
+			default: gotoPage('/index'); return;
+		}
+	}
+
+	socket.on('response', function (server_response_str) {
+		var response_obj = JSON.parse(server_response_str); 
+		var msg = (response_obj["success"]
+			? "SUCCESS: " : "FAILURE: ") + response_obj["message"]; 
+		if(response_obj.success == false && msg.indexOf("permissions") > -1){
+			msg = "FAILURE: You don't permission to edit users.";
+		}
+		alert(msg);
+	});
+</script>
+<body onload="emitHeader(document.title);">
 
 	<div class="generic">
-		<b>Do you really want to delete<br></b>
-		<p id="Nametype">Nametype</p><p id="item"> item</p>?<br>
+		Do you really want to delete<br>
+		<b><p id="Nametype">Nametype</p> <p id="item">item</p></b>?<br>
 		
 		<br>
 		<div class="center">
-			<button id="No" type="button" onclick="" style="font-size:100%;">Yes</button>
-			<button id="Yes" type="button" onclick="" style="font-size:100%;">No</button>
+		<form action="/user/remove/options">
+			<input disabled style="display: none"><button id="Yes" style="font-size:100%;">Yes</button>
+		</form>
+			<button id="No" type="button" onclick="goBack()" style="font-size:100%;">No</button>
 		</div>
 	</div>
 

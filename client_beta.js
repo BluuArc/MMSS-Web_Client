@@ -24,6 +24,7 @@ var local_user;
 
 var current_user;
 var current_module;
+var to_delete;
 
 //options to be used for all tests
 //request reference: http://samwize.com/2013/08/31/simple-http-get-slash-post-request-in-node-dot-js/
@@ -100,7 +101,12 @@ io.on('connection', function (socket) {
 
     socket.on('save user', function(user_str){
         current_user = JSON.parse(user_str);
+        to_delete = current_user;
     });
+
+    socket.on('get delete item',function(){
+        io.emit('get delete item response', JSON.stringify(to_delete));
+    })
 
     socket.on('user request', function () {
         io.emit('user response', JSON.stringify(current_user));
@@ -311,8 +317,8 @@ app.get('/user/edit/options', function (req, res) {
     console.log(req);
     editedUser = JSON.parse(JSON.stringify(current_user));
     editedUser.editor_info = editor_info;
-    editedUser.name = req.query.name,
-    editedUser.type = req.query.type,
+    editedUser.name = req.query.name;
+    editedUser.type = req.query.type;
     editedUser.isBeingListened = (req.query.status == 'false');
     console.log(editedUser);
     var path = '/user/edit';
@@ -328,6 +334,33 @@ app.get('/user/edit/options', function (req, res) {
     });
 });
 
+app.get('/user/remove',function(req,res){
+    res.sendFile(__dirname + "/frontend_beta/" + "delete_confirmation.html");
+});
+
+app.get('/user/remove/options', function (req, res) {
+    console.log(req);
+    deletedUser = JSON.parse(JSON.stringify(to_delete));
+    deletedUser.editor_info = editor_info;
+    console.log(deletedUser);
+    if(deletedUser.id == local_user.id){
+        var response = {
+            success: false,
+            message: "You can't remove yourself during this demo."
+        }
+        send_response_to_client(response);
+        res.redirect('/user');
+    }else{
+        var path = '/user/remove';
+        send_data_get_response(path, 'DELETE', JSON.stringify(deletedUser), function (fullResponse) {
+            var server_response = JSON.parse(fullResponse);
+            console.log(server_response);
+
+            send_response_to_client(server_response);
+            res.redirect('/user');
+        });
+    }
+});
 
 server.listen(4000, function () {
     var host = server.address().address;
