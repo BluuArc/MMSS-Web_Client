@@ -7,6 +7,24 @@
 <head>
     <title>MMSS Web Client: Beta Release</title>
 </head>
+<style>
+.wrapper { 
+    width: 50%; 
+    margin-left: 25%; 
+}
+
+#header {
+    background-color: greenyellow;
+    width: 724px;
+    text-align: center; 
+}
+
+iframe{
+    width: 720px; 
+    height:1280px; 
+    background-color:white;
+}
+</style>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
@@ -37,13 +55,20 @@
 
 </script>
 
-<body>
-    Connected to:
-    <p style="display: inline" id="ip">Server IP Here</p><br>
-    <p id="header_title">Page Header here</p>
-    <button onclick="reset_iframe()">Click here to go back to main page</button>
-    <br>
-    <iframe src="/index" id="web_frame" style="width: 720px; height:1280px"></iframe>
+<body style="background-color:black;">
+    <div class="wrapper">
+        <div id="header">
+            <p style="display:inline;font-size: 300%">Connected to:
+            <p style="display: inline;font-size: 300%" id="ip">Server IP Here</p><br>
+            <p id="header_title" style="display:inline; font-size: 300%">Page Header here</p><br>
+        </div>
+        <!--<br>-->
+        <iframe src="/index" id="web_frame"></iframe>
+        <div id="header">
+            <button onclick="goBack()" style="display:inline; font-size: 300%">Previous Page</button> |
+            <button onclick="reset_iframe()" style="display:inline; font-size: 300%">Home Page</button>
+        </div>
+    </div>
 </body>
 
 </html>
