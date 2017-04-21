@@ -78,6 +78,9 @@
         document.getElementById('web_frame').src = previous_url;
     }
 
+    function refresh_iframe(){
+        document.getElementById('web_frame').contentDocument.location.reload(true);
+    }
 </script>
 
 <body style="background-color:black;">
@@ -90,8 +93,9 @@
         <!--<br>-->
         <iframe src="/index" id="web_frame"></iframe>
         <div id="header">
-            <button onclick="goBack()" style="display:inline; font-size: 300%">Previous Page</button> |
-            <button onclick="reset_iframe()" style="display:inline; font-size: 300%">Home Page</button>
+            <button onclick="goBack()" style="display:inline; font-size: 300%">Back</button> |
+            <button onclick="reset_iframe()" style="display:inline; font-size: 300%">Home</button> |
+            <button onclick="refresh_iframe()" style="display:inline; font-size: 300%">Refresh</button>
         </div>
     </div>
 </body>
