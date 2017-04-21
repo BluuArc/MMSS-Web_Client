@@ -16,7 +16,7 @@ var shortid = require('shortid');
 var server_ip = "";
 var editor_info = {
     name: "",
-    id: shortid.generate(), //TODO: auto generate
+    id: shortid.generate(),
     type: "user"
 }
 
@@ -454,8 +454,7 @@ app.get('/module/remove/options', function (req, res) {
     deletedModule = JSON.parse(JSON.stringify(to_delete));
     deletedModule.editor_info = editor_info;
     console.log(deletedModule);
-    console.log("TODO: Get permanent demo module");
-    if (deletedModule.id == local_user.id) {
+    if (deletedModule.id == 1599) {
         var response = {
             success: false,
             message: "You can't remove the demo module during this demo."
@@ -472,7 +471,6 @@ app.get('/module/remove/options', function (req, res) {
             res.redirect('/module');
         });
     }
-    console.log("TODO: Get permanent demo module");
 });
 
 server.listen(4000, function () {
