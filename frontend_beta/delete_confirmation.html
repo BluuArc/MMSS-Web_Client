@@ -14,6 +14,7 @@
 	socket.emit('get delete item');
 
 	var type;
+	var previous_url;
 	socket.on('get delete item response',function(delete_item_str){
 		var item = JSON.parse(delete_item_str);
 		
@@ -31,17 +32,21 @@
 			gotoPage('/index');
 		}
 		type = itemType;
+		switch(type){
+			case 'Module': previous_url = '/module'; break;
+			case 'User': previous_url = '/user'; break;
+			default: previous_url = '/index'; break;
+		}
+
 		$('#Nametype').text(itemType);
 
 		$('#item').text(item.name);
+
+		emitBackButton(previous_url);
 	});
 
 	function goBack(){
-		switch(type){
-			case 'Module': gotoPage('/module'); return;
-			case 'User': gotoPage('/user'); return;
-			default: gotoPage('/index'); return;
-		}
+		gotoPage(previous_url);
 	}
 
 	socket.on('response', function (server_response_str) {

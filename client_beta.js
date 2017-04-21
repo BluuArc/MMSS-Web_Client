@@ -44,6 +44,11 @@ io.on('connection', function (socket) {
     socket.on('header update', function(header){
         console.log("received " + header);
         io.emit('header update', header);
+    });
+
+    socket.on('back button update',function(url){
+        console.log("received " + url);
+        io.emit('back button update', url);
     })
 
     socket.on('disconnect', function () {
@@ -98,7 +103,7 @@ io.on('connection', function (socket) {
     socket.on('user list request',function(){
           get_server_response('/user/list','GET',function(fullResponse){
               io.emit('user list response', fullResponse);
-          })
+          });
     });
 
     socket.on('save user', function(user_str){

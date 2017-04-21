@@ -50,9 +50,21 @@ iframe{
             console.log("Received new header " + new_header);
             $('#header_title').text(new_header);
         });
+
+        socket.on('back button update', function(url){
+            console.log("Received update back button path" + url);
+            previous_url = url;
+        })
     });
+
     function reset_iframe() {
         document.getElementById('web_frame').src = "/index";
+    }
+
+    var previous_url = "/index";
+    
+    function goBack(){
+        document.getElementById('web_frame').src = previous_url;
     }
 
 </script>
