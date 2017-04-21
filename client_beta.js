@@ -120,6 +120,10 @@ io.on('connection', function (socket) {
         })
     });
 
+    socket.on('module request', function () {
+        io.emit('module response', JSON.stringify(current_module));
+    });
+
     socket.on('save module', function (module_str) {
         current_module = JSON.parse(module_str);
         to_delete = current_module;
@@ -390,6 +394,30 @@ app.get('/module/add/options', function (req, res) {
             res.redirect('/module');
         else
             res.redirect('/module/add');
+    });
+});
+
+app.get('/module/edit', function (req, res) {
+    res.sendFile(__dirname + "/frontend_beta/" + "module_edit.html");
+});
+
+app.get('/module/edit/options', function (req, res) {
+    console.log(req);
+    editedModule = JSON.parse(JSON.stringify(current_module));
+    editedModule.editor_info = editor_info;
+    editedModule.name = req.query.name;
+    editedModule.isBeingListened = (req.query.status == 'false');
+    console.log(editedModule);
+    var path = '/module/edit';
+    send_data_get_response(path, 'POST', JSON.stringify(editedModule), function (fullResponse) {
+        var server_response = JSON.parse(fullResponse);
+        console.log(server_response);
+
+        send_response_to_client(server_response);
+        if (server_response.success)
+            res.redirect('/module');
+        else
+            res.redirect('/module/edit');
     });
 });
 

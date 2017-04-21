@@ -1,15 +1,46 @@
 <!DOCTYPE html>
 <html>
 
-<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
+<link rel="stylesheet" type="text/css" href="/textbox.css" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
 
 <head>
     <title>Edit Module</title>
 </head>
+<script>
+    if (socket == undefined) { socket = io(); }
+    socket.emit('module request');
 
-<body>
+    var myModule;
+    socket.on('module response', function (module_str) {
+        myModule = JSON.parse(module_str);
 
+        setFields(myModule);
+    });
 
+    function setFields(inModule) {
+        $('#name').val(inModule.name);
+        $('#id').text(inModule.id);
+
+        var blacklist = document.getElementById('status');
+        blacklist.selectedIndex = (inModule.isBeingListened == false) ? 0 : 1;
+    }
+
+    socket.on('response', function (server_response_str) {
+        var response_obj = JSON.parse(server_response_str);
+        var msg = (response_obj["success"]
+            ? "SUCCESS: " : "FAILURE: ") + response_obj["message"];
+        if (response_obj.success == false && msg.indexOf("permissions") > -1) {
+            msg = "FAILURE: You don't permission to edit modules.";
+        }
+        alert(msg);
+    });
+
+</script>
+
+<body onload="emitHeader(document.title);">
 <div class="center">
 <div class="editID">
 	<b>ID:</b> <p id="id">example</p>
@@ -20,18 +51,15 @@
 <div class="generic">
 <div class="modules">
     <form action="/module/edit/options">
-        <b>Name:</b><br> <input type="text" name="name" style="width: 99%;font-size: 100%;"><br>
-        <b>Type:</b><br> <select name="type" style="width: 99%;font-size: 100%;">
-            <option>sensormodule</option>
-            <option>interactivemodule</option>
-        </select><br>
+        <b>Name:</b><br> <input id="name" type="text" name="name" style="width: 99%;font-size: 100%;"><br>
         
-	<b>Blacklist:</b><br> <select name="status" style="font-size:100%;width: 100%;">
-		<option>true</option>
-		<option>false</option>
-	</select><br><br>
-	
-        
+        <b>Blacklist:</b><br> <select id="status" name="status" style="font-size:100%;width: 100%;">
+            <option>true</option>
+            <option>false</option>
+        </select><br><br>
+
+        <!--TODO: Parameter Data field?-->
+
 	<div class="center">
 		<input type="submit" value="Submit" style="font-size: 100%;"><br>
 	</div>
