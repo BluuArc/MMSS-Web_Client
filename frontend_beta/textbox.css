@@ -90,32 +90,37 @@
 		color: white;
 	}
 
-	.userbutton{
+	.userbutton,input[type=submit].userbutton{
 		background-color: #BEF202;
 		color: black;
 	}
 
-	.userbutton:hover{
+	.userbutton:hover,input[type=submit].userbutton:hover{
 		background-color: #1B676B;
 		color: white;
 	}
 
-	.modulebutton {
+	.modulebutton,input[type=submit].modulebutton {
 		background-color: #FFBE40;
 		color: black;
 	}
 	
-	.modulebutton:hover {
+	.modulebutton:hover,input[type=submit].modulebutton:hover{
 		background-color: #AB3E5B;
 		color: white;
 	}
 
-	.serverbutton {
+	.modulebutton:disabled,.modulebutton[disabled=disabled] {
+		background-color: lightgrey;
+		color: grey;
+	}
+
+	.serverbutton,input[type=submit].serverbutton {
 		background-color: #E3AAD6;
 		color: black;
 	}
 	
-	.serverbutton:hover {
+	.serverbutton:hover,input[type=submit].serverbutton:hover {
 		background-color: #742365;
 		color: white;
 	}
