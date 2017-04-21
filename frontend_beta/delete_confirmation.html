@@ -20,8 +20,15 @@
 		var itemType = "Unknown type";
 		if(item.type.toLowerCase().indexOf('module') > -1){
 			itemType = "Module";
+			document.getElementById('deletion_form').action = "/module/remove/options";
 		}else if(['guardian','dependent'].indexOf(item.type.toLowerCase()) > -1){
 			itemType = "User";
+			document.getElementById('deletion_form').action = "/user/remove/options";
+		}else{ //shouldn't happen
+			console.log("Unknown item type for");
+			console.log(item);
+			alert("Unknown type for " + item.id + ". Redirecting to home page.");
+			gotoPage('/index');
 		}
 		type = itemType;
 		$('#Nametype').text(itemType);
@@ -55,7 +62,7 @@
 		
 		<br>
 		<div class="center">
-		<form action="/user/remove/options">
+		<form id="deletion_form" action="/index">
 			<input disabled style="display: none"><button id="Yes" style="font-size:100%;">Yes</button>
 		</form>
 			<button id="No" type="button" onclick="goBack()" style="font-size:100%;">No</button>
