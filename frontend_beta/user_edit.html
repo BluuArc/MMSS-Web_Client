@@ -22,6 +22,7 @@
 
 	function setFields(inUser){
 		$('#name').val(inUser.name);
+        $('#id').text(inUser.id);
 
 		var type = document.getElementById('type');
 		type.selectedIndex = (inUser.type.toLowerCase() == "guardian") ?  0 : 1;
