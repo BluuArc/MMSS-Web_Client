@@ -421,6 +421,36 @@ app.get('/module/edit/options', function (req, res) {
     });
 });
 
+app.get('/module/remove', function (req, res) {
+    res.sendFile(__dirname + "/frontend_beta/" + "delete_confirmation.html");
+});
+
+app.get('/module/remove/options', function (req, res) {
+    console.log(req);
+    deletedModule = JSON.parse(JSON.stringify(to_delete));
+    deletedModule.editor_info = editor_info;
+    console.log(deletedModule);
+    console.log("TODO: Get permanent demo module");
+    if (deletedModule.id == local_user.id) {
+        var response = {
+            success: false,
+            message: "You can't remove the demo module during this demo."
+        }
+        send_response_to_client(response);
+        res.redirect('/module');
+    } else {
+        var path = '/module/remove';
+        send_data_get_response(path, 'DELETE', JSON.stringify(deletedModule), function (fullResponse) {
+            var server_response = JSON.parse(fullResponse);
+            console.log(server_response);
+
+            send_response_to_client(server_response);
+            res.redirect('/module');
+        });
+    }
+    console.log("TODO: Get permanent demo module");
+});
+
 server.listen(4000, function () {
     var host = server.address().address;
     var port = server.address().port;
