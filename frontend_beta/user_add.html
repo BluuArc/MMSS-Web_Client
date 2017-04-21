@@ -11,24 +11,6 @@
 </head>
 <script>
 	if (socket == undefined) { socket = io(); }
-	// socket.emit('user request');
-
-	var user;
-	socket.on('user response', function(user_str){
-		user = JSON.parse(user_str);
-
-		setFields(user);
-	});
-
-	function setFields(inUser){
-		$('#name').text(user.name);
-
-		var type = document.getElementById('type');
-		type.selectedIndex = (user.type.toLowerCase() == "guardian") ?  0 : 1;
-
-		var blacklist = document.getElementById('status');
-		blacklist.selectedIndex = (user.isBeingListenedTo) ? 0 : 1;
-	}
 
 	socket.on('response', function (server_response_str) {
 			document.getElementById('name').value = "";

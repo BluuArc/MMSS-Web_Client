@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 <html>
 
-<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
-
+<link rel="stylesheet" type="text/css" href="/textbox.css" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
 
 <head>
     <title>Add Module</title>
 </head>
+<script>
+    if (socket == undefined) { socket = io(); }
 
+    socket.on('response', function (server_response_str) {
+        document.getElementById('name').value = "";
+        var response_obj = JSON.parse(server_response_str);
+        var msg = (response_obj["success"]
+            ? "SUCCESS: " : "FAILURE: ") + response_obj["message"];
+        alert(msg);
+    });
+
+</script>
 <body>
 <div class="generic">
 <div class="modules">
     <form action="/module/add/options">
-        <b>Name:</b><br> <input type="text" name="name" style="width: 99%;font-size: 100%;"><br>
-        <b>Type:</b><br> <select name="type" style="width: 99%;font-size: 100%;">
+        <b>Name:</b><br> <input id="name" type="text" name="name" style="width: 99%;font-size: 100%;"><br>
+        <b>Type:</b><br> <select id="type" name="type" style="width: 99%;font-size: 100%;">
             <option>sensormodule</option>
             <option>interactivemodule</option>
         </select><br>
-        
-	<b>Blacklist:</b><br> <select name="status" style="font-size:100%;width: 100%;">
+        <b>ID:</b><br> <input id="id" type="text" name="id" style="width: 99%;font-size: 100%;"><br>
+	<!--<b>Blacklist:</b><br> <select name="status" style="font-size:100%;width: 100%;">
 		<option>true</option>
 		<option>false</option>
-	</select><br>
+	</select><br>-->
 	
 	<br>
 	<div class="center">

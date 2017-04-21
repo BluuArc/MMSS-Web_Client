@@ -87,10 +87,12 @@ io.on('connection', function (socket) {
 
     socket.on('notifications request',function(){
         // console.log("Received notif request");
-        var request_data = JSON.stringify(local_user);
-        send_data_get_response('/notifications', 'POST', request_data, function(fullResponse){
-            io.emit('notifications response', fullResponse);
-        });
+        if(local_user != undefined){
+            var request_data = JSON.stringify(local_user);
+            send_data_get_response('/notifications', 'POST', request_data, function(fullResponse){
+                io.emit('notifications response', fullResponse);
+            });
+        }
     });
 
     socket.on('user list request',function(){
@@ -302,7 +304,7 @@ app.get('/user/add/options', function (req, res) {
         if(server_response.success)
             res.redirect('/user');
         else
-            res.redirect('/user/edit');
+            res.redirect('/user/add');
     });
 });
 
@@ -363,34 +365,33 @@ app.get('/module', function (req, res) {
     res.sendFile(__dirname + "/frontend_beta/" + "module_overview.html");
 });
 
-// app.get('/user/add', function (req, res) {
-//     res.sendFile(__dirname + "/frontend_beta/" + "user_add.html");
-// });
+app.get('/module/add', function (req, res) {
+    res.sendFile(__dirname + "/frontend_beta/" + "module_add.html");
+});
 
-// app.get('/user/add/options', function (req, res) {
-//     // console.log(req);
-//     var newUser = {
-//         name: req.query.name,
-//         id: shortid.generate(),
-//         type: req.query.type,
-//         logs: [],
-//         notifications: [],
-//         isBeingListened: false,
-//         last_update_time: get_formatted_date(new Date())
-//     };
-//     console.log(newUser);
-//     var path = '/user/add';
-//     send_data_get_response(path, 'POST', JSON.stringify(newUser), function (fullResponse) {
-//         var server_response = JSON.parse(fullResponse);
-//         console.log(server_response);
+app.get('/module/add/options', function (req, res) {
+    // console.log(req);
+    var newModule = {
+        name: req.query.name,
+        id: req.query.id,
+        type: req.query.type,
+        mainServerID: server_ip,
+        parameterData: ["test param"],
+        isBeingListened: false,
+    };
+    console.log(newModule);
+    var path = '/module/add';
+    send_data_get_response(path, 'POST', JSON.stringify(newModule), function (fullResponse) {
+        var server_response = JSON.parse(fullResponse);
+        console.log(server_response);
 
-//         send_response_to_client(server_response);
-//         if (server_response.success)
-//             res.redirect('/user');
-//         else
-//             res.redirect('/user/edit');
-//     });
-// });
+        send_response_to_client(server_response);
+        if (server_response.success)
+            res.redirect('/module');
+        else
+            res.redirect('/module/add');
+    });
+});
 
 server.listen(4000, function () {
     var host = server.address().address;
