@@ -112,18 +112,15 @@ io.on('connection', function (socket) {
         io.emit('user response', JSON.stringify(current_user));
     });
 
-    socket.on('module request', function (id) {
-        console.log("Received " + id);
-        var path = '/module/id/' + id;
-        get_server_response(path, 'GET', function (fullResponse) {
-            try {
-                var result = JSON.parse(fullResponse);
-                io.emit('module found', JSON.stringify(result));
-                console.log("Emitted " + JSON.stringify(result));
-            } catch (err) {
-                console.log(err);
-            }
-        });
+    socket.on('module list request', function () {
+        get_server_response('/module/list', 'GET', function (fullResponse) {
+            io.emit('module list response', fullResponse);
+        })
+    });
+
+    socket.on('save module', function (module_str) {
+        current_module = JSON.parse(module_str);
+        to_delete = current_module;
     });
 
 });
@@ -361,6 +358,39 @@ app.get('/user/remove/options', function (req, res) {
         });
     }
 });
+
+app.get('/module', function (req, res) {
+    res.sendFile(__dirname + "/frontend_beta/" + "module_overview.html");
+});
+
+// app.get('/user/add', function (req, res) {
+//     res.sendFile(__dirname + "/frontend_beta/" + "user_add.html");
+// });
+
+// app.get('/user/add/options', function (req, res) {
+//     // console.log(req);
+//     var newUser = {
+//         name: req.query.name,
+//         id: shortid.generate(),
+//         type: req.query.type,
+//         logs: [],
+//         notifications: [],
+//         isBeingListened: false,
+//         last_update_time: get_formatted_date(new Date())
+//     };
+//     console.log(newUser);
+//     var path = '/user/add';
+//     send_data_get_response(path, 'POST', JSON.stringify(newUser), function (fullResponse) {
+//         var server_response = JSON.parse(fullResponse);
+//         console.log(server_response);
+
+//         send_response_to_client(server_response);
+//         if (server_response.success)
+//             res.redirect('/user');
+//         else
+//             res.redirect('/user/edit');
+//     });
+// });
 
 server.listen(4000, function () {
     var host = server.address().address;

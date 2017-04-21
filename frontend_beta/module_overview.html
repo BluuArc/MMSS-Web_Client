@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<link rel = "stylesheet" type = "text/css" href = "/textbox.css" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
+
+<head>
+	<title>Module Overview</title>
+</head>
+<script>
+	if (socket == undefined) { socket = io(); }
+	getModules();
+	var modules = [];
+
+	function getModules(){
+		socket.emit('module list request');
+	}
+
+	//populate dropdown
+	socket.on('module list response', function(module_arr_str){
+		modules = JSON.parse(module_arr_str);
+		for(var i = 0; i < modules.length; ++i){
+			addModuleToDropdown(modules[i]);
+		}
+		if(modules.length == 0){
+			document.getElementById('add').disabled = true;
+			document.getElementById('edit').disabled = true;
+			document.getElementById('remove').disabled = true;
+		}else{
+			printModuleInfo();
+		}
+	});
+
+	function addModuleToDropdown(inModule){
+		var moduleBox = document.getElementById('dropdown');
+		var option = document.createElement('option');
+		var name = inModule.name;
+		if(name.length > 15){
+			name = name.slice(0,15) + "...";
+		}
+		option.text = name + " (" + inModule["type"][0].toUpperCase() + ")";
+		moduleBox.add(option);
+	}
+
+
+	function printModuleInfo(){
+		var index = document.getElementById('dropdown').selectedIndex;
+		var myModule = modules[index];
+
+		document.getElementById('box_area').style = "";
+		$('#name').text(myModule.name);
+		$('#status').text((!myModule.isBeingListened).toString());
+		$('#type').text(myModule.type);
+	}
+
+	function goToModuleOption(url){
+		var index = document.getElementById('dropdown').selectedIndex;
+		var myModule = modules[index];
+		socket.emit('save module', JSON.stringify(myModule));
+		gotoPage(url);
+	}
+</script>
+<body onload="emitHeader(document.title);">
+<div class="generic">
+	<b> Select <p id="TypeName">Module:</p> </b>
+
+	<select id="dropdown" style="font-size: 100%;" onchange="printModuleInfo()">
+		
+	</select> <br><br>
+
+
+	<div class="center">
+		<div id="box_area" style="display:none">
+			<b><p id="TypeName">Module</p> info:</b> <br>
+
+			<div class="infobox"> 
+
+				<b>Name:</b> 
+				<p id="name">none</p><br>
+
+				<b>Blacklist:</b>
+				<p id="status">none</p><br>
+
+				<b>Type:</b>
+				<p id="type">none</p><br>
+			</div> 
+		</div>	
+		<br>
+
+		<button id="add" type="button" onclick="goToModuleOption('/module/add');" style="font-size:100%;">add</button>
+		<button id="edit" type="button" onclick="goToModuleOption('/module/edit');" style="font-size:100%;">edit</button>
+		<button id="remove" type="button" onclick="goToModuleOption('/module/remove');" style="font-size:100%;">remove</button>
+	</div>
+
+</div>
+</body>
+
+</html>

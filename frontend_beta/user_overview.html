@@ -24,7 +24,13 @@
 		for(var i = 0; i < users.length; ++i){
 			addUserToDropDown(users[i]);
 		}
-		printUserInfo();
+		if(users.length == 0){
+			document.getElementById('add').disabled = true;
+			document.getElementById('edit').disabled = true;
+			document.getElementById('remove').disabled = true;
+		}else{
+			printUserInfo();
+		}
 	});
 
 	function addUserToDropDown(user){
@@ -43,12 +49,13 @@
 		var index = document.getElementById('dropdown').selectedIndex;
 		var user = users[index];
 
+		document.getElementById('box_area').style = "";
 		$('#name').text(user.name);
 		$('#status').text((!user.isBeingListened).toString());
 		$('#type').text(user.type);
 	}
 
-	function goToUserPage(url){
+	function goToUserOption(url){
 		var index = document.getElementById('dropdown').selectedIndex;
 		var user = users[index];
 		socket.emit('save user', JSON.stringify(user));
@@ -65,24 +72,26 @@
 
 
 	<div class="center">
+		<div id="box_area" style="display: none">
+			<b><p id="TypeName">User</p> info:</b> <br>
 
-		<b><p id="TypeName">User</p> info:</b> <br>
+			<div class="infobox"> 
 
-		<div class="infobox"> 
+				<b>Name:</b> 
+				<p id="name">none</p><br>
 
-			<b>Name:</b> 
-			<p id="name">name</p><br>
+				<b>Blacklist:</b>
+				<p id="status">none</p><br>
 
-			<b>Blacklist:</b>
-			<p id="status">True</p><br>
+				<b>Type:</b>
+				<p id="type">none</p><br>
+			</div> 
+		</div>
+		<br>
 
-			<b>Type:</b>
-			<p id="type">type</p><br>
-		</div> <br>
-
-		<button id="add" type="button" onclick="goToUserPage('/user/add');" style="font-size:100%;">add</button>
-		<button id="edit" type="button" onclick="goToUserPage('/user/edit');" style="font-size:100%;">edit</button>
-		<button id="remove" type="button" onclick="goToUserPage('/user/remove');" style="font-size:100%;">remove</button>
+		<button id="add" type="button" onclick="goToUserOption('/user/add');" style="font-size:100%;">add</button>
+		<button id="edit" type="button" onclick="goToUserOption('/user/edit');" style="font-size:100%;">edit</button>
+		<button id="remove" type="button" onclick="goToUserOption('/user/remove');" style="font-size:100%;">remove</button>
 	</div>
 
 </div>
