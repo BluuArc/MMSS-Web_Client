@@ -32,18 +32,32 @@
 			gotoPage('/index');
 		}
 		type = itemType;
-		switch(type){
-			case 'Module': previous_url = '/module'; break;
-			case 'User': previous_url = '/user'; break;
-			default: previous_url = '/index'; break;
-		}
-
+		setPageTo(type);
 		$('#Nametype').text(itemType);
-
 		$('#item').text(item.name);
 
 		emitBackButton(previous_url);
 	});
+
+	function setPageTo(type){
+		var buttonYes = document.getElementById('Yes');
+		var buttonNo = document.getElementById('No');
+		switch(type){
+			case 'Module': 
+				previous_url = '/module'; 
+				buttonYes.className = "modulebutton";
+				buttonNo.className = "modulebutton";
+				break;
+			case 'User': 
+				previous_url = '/user'; 
+				buttonYes.className = "userbutton";
+				buttonNo.className = "userbutton";
+				break;
+			default: 
+				previous_url = '/index'; 
+				break;
+		}
+	}
 
 	function goBack(){
 		gotoPage(previous_url);

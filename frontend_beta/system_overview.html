@@ -56,12 +56,12 @@
 
 <body onload="emitHeader(document.title); emitBackButton('/index');">
     <div class="generic">
-        <button style="font-size: 100%;" onclick="gotoPage('/user')">Users</button>
-        <button style="font-size: 100%;" onclick="gotoPage('/module')">Modules</button>
-        <button style="font-size: 100%;" onclick="gotoPage('/logs')">Logs</button><br>
+        <button style="font-size: 100%;" class="userbutton" onclick="gotoPage('/user')">Users</button>
+        <button style="font-size: 100%;" class="modulebutton" onclick="gotoPage('/module')">Modules</button>
+        <button style="font-size: 100%;" class="serverbutton" onclick="gotoPage('/logs')">Logs</button><br>
 
         <div style="text-align:left; border-top:1px solid black;" id="notifications_header">    
-            <p>Notifications:</p>
+            <p>Latest Notifications:</p>
         </div>
         <select disabled id="notifications" multiple="multiple" size="31" style="height: 100%;font-size: 60%;overflow:auto; width:100%">
         <!--<option></option>-->

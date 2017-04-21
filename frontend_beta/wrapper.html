@@ -37,6 +37,18 @@
 		background-color: #4CAF50; /* Green */
 		color: white;
 	}
+
+    .navbutton {
+		background-color: black;
+		color: gray;
+        border: none;
+	}
+	
+	.navbutton:hover {
+		background-color: grey;
+		color: white;
+        border: none;
+	}
 </style>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -63,7 +75,7 @@
         });
 
         socket.on('back button update', function(url){
-            console.log("Received update back button path" + url);
+            console.log("Received update back button path " + url);
             previous_url = url;
         })
     });
@@ -92,10 +104,10 @@
         </div>
         <!--<br>-->
         <iframe src="/index" id="web_frame"></iframe>
-        <div id="header">
-            <button onclick="goBack()" style="display:inline; font-size: 300%">Back</button> |
-            <button onclick="reset_iframe()" style="display:inline; font-size: 300%">Home</button> |
-            <button onclick="refresh_iframe()" style="display:inline; font-size: 300%">Refresh</button>
+        <div id="header" style="background-color:black;border:1px solid gray;">
+            <button class="navbutton" onclick="goBack()" style="display:inline; font-size: 300%">Back</button> |
+            <button class="navbutton" onclick="reset_iframe()" style="display:inline; font-size: 300%">Home</button> |
+            <button class="navbutton" onclick="refresh_iframe()" style="display:inline; font-size: 300%">Refresh</button>
         </div>
     </div>
 </body>

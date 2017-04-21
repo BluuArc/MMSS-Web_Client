@@ -71,11 +71,13 @@
 	button {
 		-webkit-transition-duration: 0.4s; /* Safari */
 		transition-duration: 0.4s;
+		border: none;
 	}
 
 	button:hover {
 		background-color: #4CAF50; /* Green */
 		color: white;
+		border: none;
 	}
 	
 	input[type=submit]{
@@ -87,7 +89,37 @@
 		background-color: #4CAF50; /* Green */
 		color: white;
 	}
+
+	.userbutton{
+		background-color: #BEF202;
+		color: black;
+	}
+
+	.userbutton:hover{
+		background-color: #1B676B;
+		color: white;
+	}
+
+	.modulebutton {
+		background-color: #FFBE40;
+		color: black;
+	}
 	
+	.modulebutton:hover {
+		background-color: #AB3E5B;
+		color: white;
+	}
+
+	.serverbutton {
+		background-color: #E3AAD6;
+		color: black;
+	}
+	
+	.serverbutton:hover {
+		background-color: #742365;
+		color: white;
+	}
+
 	p {
 		display: inline;
 	}
