@@ -8,24 +8,35 @@
     <title>MMSS Web Client: Beta Release</title>
 </head>
 <style>
-.wrapper { 
-    width: 50%; 
-    margin-left: 25%; 
-}
+    .wrapper { 
+        width: 50%; 
+        margin-left: 25%; 
+    }
 
-#header {
-    background-color: greenyellow;
-    width: 724px;
-    margin-left: 25%;
-    text-align: center; 
-}
+    #header {
+        background-color: greenyellow;
+        width: 724px;
+        margin-left: 25%;
+        text-align: center; 
+    }
 
-iframe{
-    width: 720px; 
-    height:1280px; 
-    margin-left: 25%;
-    background-color:white;
-}
+    iframe{
+        width: 720px; 
+        height:1280px; 
+        margin-left: 25%;
+        background-color:white;
+    }
+
+/*button style code originally from https://www.w3schools.com/css/css3_buttons.asp*/
+	button {
+		-webkit-transition-duration: 0.4s; /* Safari */
+		transition-duration: 0.4s;
+	}
+
+	button:hover {
+		background-color: #4CAF50; /* Green */
+		color: white;
+	}
 </style>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -62,7 +73,7 @@ iframe{
     }
 
     var previous_url = "/index";
-    
+
     function goBack(){
         document.getElementById('web_frame').src = previous_url;
     }

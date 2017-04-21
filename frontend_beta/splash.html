@@ -24,7 +24,7 @@
                 socket.emit('login request', $('#name').val(),$('#ip').val(), use_https); //emit event with message
                 // window.location.replace("/index");
             }else{
-                alert("Please enter a name and IP");
+                alert("Please enter a name and IP.\n IP should be in a similar form to 123.456.789.0:8080");
             }
             return false;
         });

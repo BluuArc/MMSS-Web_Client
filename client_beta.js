@@ -100,6 +100,21 @@ io.on('connection', function (socket) {
         }
     });
 
+    socket.on('logs request', function () {
+        // console.log("Received notif request");
+        if (local_user != undefined) {
+            var request_data = {
+                id: local_user.id,
+                start_time: local_user.last_update_time,
+                end_time: get_formatted_date(new Date())
+            }
+
+            send_data_get_response('/logs', 'POST', JSON.stringify(request_data), function (fullResponse) {
+                io.emit('logs response', fullResponse);
+            });
+        }
+    });
+
     socket.on('user list request',function(){
           get_server_response('/user/list','GET',function(fullResponse){
               io.emit('user list response', fullResponse);
@@ -282,6 +297,10 @@ app.get('/index',function(req,res){
         res.sendFile(__dirname + "/frontend_beta/" + "splash.html");
     else
         res.sendFile(__dirname + "/frontend_beta/" + "system_overview.html");
+});
+
+app.get('/logs', function(req,res){
+    res.sendFile(__dirname + "/frontend_beta/" + "logs.html");
 });
 
 app.get('/user',function(req,res){

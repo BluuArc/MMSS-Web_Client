@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<link rel = "stylesheet" type = "text/css" href = "/textbox.css" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/client_scripts.js"></script>
+
+<head>
+    <title>System Logs</title>
+</head>
+<script>
+    if (socket == undefined) { socket = io(); }
+    socket.emit('logs request');
+    //check for logs every second
+    setInterval(function(){
+        socket.emit('logs request');
+    },1000);
+
+    //expected input: Array of PassableLog objects (as a JSON string)
+    socket.on('logs response', function(logs_arr_str){
+        var logs_arr = JSON.parse(logs_arr_str);
+        // console.log(logs_arr);
+        if(logs_arr.length == document.getElementById('logs').length){
+            return;
+        }
+        clearLogs();
+        if(logs_arr.length == 0){
+            addLog("No logs");
+        }else{
+            //insert in reverse order
+            for(var i = logs_arr.length - 1; i >= 0; --i){
+                var log = logs_arr[i];
+                // console.log(log);
+                // var notifMsg = "[" + log["time"] + "] " + (log["success"] ? "S: " : "F: ") + log["message"]
+                var logMsg = "[" + log["time"] + "] " + log.author_info.id + " (" + log.author_info.type + "): " + log.message;
+                addLog(logMsg);
+            }
+        }
+    });
+
+    function clearLogs(){
+        var logBox = document.getElementById('logs');
+        while(logBox.length > 0){
+            logBox.remove(0);
+        }
+    }
+
+    //expected input: string
+    function addLog(log_messagee){
+        var logBox = document.getElementById('logs');
+        var newLog = document.createElement('option');
+        newLog.text = log_messagee;
+        logBox.add(newLog);
+    }
+</script>
+
+<body onload="emitHeader(document.title); emitBackButton('/index');">
+    <div class="generic">
+        <div style="text-align:left; border-top:1px solid black;" id="logs_header">    
+            <p>Logs:</p>
+        </div>
+        <select disabled id="logs" multiple="multiple" size="33" style="height: 100%;font-size: 60%;overflow:auto; width:100%">
+        <!--<option></option>-->
+        </select>
+    </div>
+
+</body>
+
+</html>

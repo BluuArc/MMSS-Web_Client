@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<link rel = "stylesheet" type = "text/css" href = "textbox.css" />
+<link rel = "stylesheet" type = "text/css" href = "/textbox.css" />
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script src="/client_scripts.js"></script>
@@ -9,11 +9,10 @@
 <head>
     <title>System Overview</title>
 </head>
-
 <script>
     if (socket == undefined) { socket = io(); }
     socket.emit('notifications request');
-    //check for notifications every 5 seconds
+    //check for notifications every second
     setInterval(function(){
         socket.emit('notifications request');
     },1000);
@@ -57,13 +56,16 @@
 
 <body onload="emitHeader(document.title); emitBackButton('/index');">
     <div class="generic">
-    <button style="font-size: 100%;" onclick="gotoPage('/user')">Users</button>
-    <button style="font-size: 100%;" onclick="gotoPage('/module')">Modules</button>
-    <button style="font-size: 100%;" onclick="gotoPage('/logs')">Logs</button><br>
-	
-    <select disabled id="notifications" multiple="multiple" size="33" style="height: 100%;font-size: 60%;overflow:auto; width:100%">
-	<!--<option></option>-->
-    </select>
+        <button style="font-size: 100%;" onclick="gotoPage('/user')">Users</button>
+        <button style="font-size: 100%;" onclick="gotoPage('/module')">Modules</button>
+        <button style="font-size: 100%;" onclick="gotoPage('/logs')">Logs</button><br>
+
+        <div style="text-align:left; border-top:1px solid black;" id="notifications_header">    
+            <p>Notifications:</p>
+        </div>
+        <select disabled id="notifications" multiple="multiple" size="31" style="height: 100%;font-size: 60%;overflow:auto; width:100%">
+        <!--<option></option>-->
+        </select>
     </div>
 
 </body>
