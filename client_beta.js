@@ -149,6 +149,22 @@ io.on('connection', function (socket) {
         to_delete = current_module;
     });
 
+    socket.on('reload',function(){
+        server_ip = "";
+        editor_info = {
+            name: "",
+            id: shortid.generate(),
+            type: "user"
+        }
+
+        local_user = null;
+
+        current_user = null;
+        current_module = null;
+        to_delete = null;
+        io.emit('reload');
+    })
+
 });
 
 function send_response_to_client(response_obj) {

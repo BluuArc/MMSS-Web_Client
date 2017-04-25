@@ -59,9 +59,9 @@
         document.getElementById("web_frame").style.height = height + "px";
         document.getElementById("web_frame").style.width = width + "px";
     };
-
+    var socket;
     $(function () {
-        var socket = io();
+        socket = io();
         console.log("Created socket");
         socket.on('ip', function (ip) {
             console.log("Received emit of ip");
@@ -78,7 +78,11 @@
         socket.on('back button update', function(url){
             console.log("Received update back button path " + url);
             previous_url = url;
-        })
+        });
+        
+        socket.on('reload', function(){
+            reset_iframe();
+        });
     });
 
     function reset_iframe() {
@@ -94,12 +98,18 @@
     function refresh_iframe(){
         document.getElementById('web_frame').contentDocument.location.reload(true);
     }
+
+    function restartDemo(){
+        if(confirm("Restart the demo?")){
+            socket.emit("reload");
+        }
+    }
 </script>
 
 <body style="background-color:black;">
     <div class="wrapper">
         <div id="header">
-            <p style="display:inline;font-size: 300%">Connected to:
+            <p style="display:inline;font-size: 300%;" onclick="restartDemo()">Connected to:
             <p style="display: inline;font-size: 300%" id="ip">Server IP Here</p><br>
             <p id="header_title" style="display:inline; font-size: 300%">Page Header here</p><br>
         </div>
