@@ -52,7 +52,7 @@ io.on('connection', function (socket) {
         var clientUser = {
             name: editor_info["name"],
             id: editor_info["id"],
-            type: editor_info["type"],
+            type: "guardian",
             logs: [],
             notifications: [],
             isBeingListened: false,
